@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seven Fincorp · NCD Battle Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@font-face {
+  font-family: 'Bank Gothic';
+  src: local('BankGothic Md BT'), local('Bank Gothic Medium'), local('BankGothic-Medium'), local('Bank Gothic');
+  font-weight: normal;
+}
+
+:root {
+  --bg: #332f78;
+  --panel: #2d2968;
+  --panel2: #262258;
+  --border: #3d3988;
+  --text: #e8ecff;
+  --muted: #a0b0d8;
+  --dim: #1e1b4d;
+
+  --accent: #36b6e7;
+  --accent-glow: 0 0 24px rgba(54,182,231,0.35), 0 0 60px rgba(54,182,231,0.12);
+  --accent-dim: rgba(54,182,231,0.07);
+  --accent-mid: rgba(54,182,231,0.16);
+  --accent-border: rgba(54,182,231,0.28);
+
+  --pink:     #f472b6;
+  --yellow:   #f5c842;
+  --green:    #34d399;
+  --brown:    #d4895a;
+  --lavender: #a78bfa;
+  --silver:   #94a3b8;
+  --grey:     #7a8fa3;
+
+  --BG: 'Bank Gothic', 'Rajdhani', 'Teko', sans-serif;
+  --MONO: 'DM Mono', monospace;
+  --BODY: 'Rajdhani', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--BODY);
+  font-weight: 500;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(54,182,231,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(54,182,231,0.022) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px; height: 600px;
+  background: radial-gradient(ellipse, rgba(54,182,231,0.035) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* TOP BAR */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 36px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 10;
+  background: rgba(51,47,120,0.92);
+}
+
+.topbar::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.35;
+}
+
+.logo {
+  font-family: var(--BG);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--text);
+  text-transform: uppercase;
+}
+
+.logo span {
+  color: var(--accent);
+  text-shadow: 0 0 20px rgba(54,182,231,0.5);
+}
+
+.tagline {
+  font-family: var(--MONO);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.instruction-bar {
+  text-align: center;
+  padding: 10px;
+  font-family: var(--MONO);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 10;
+  background: rgba(51,47,120,0.8);
+}
+
+.instruction-bar span { color: var(--accent); }
+
+/* ARENA */
+.arena {
+  display: grid;
+  grid-template-columns: 272px 1fr 272px;
+  min-height: calc(100vh - 75px);
+  position: relative;
+  z-index: 2;
+}
+
+.side-panel {
+  padding: 20px 14px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.side-panel.right-panel {
+  border-right: none;
+  border-left: 1px solid var(--border);
+  overflow-y: auto;
+  max-height: calc(100vh - 75px);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.side-panel.right-panel::-webkit-scrollbar { width: 3px; }
+.side-panel.right-panel::-webkit-scrollbar-track { background: transparent; }
+.side-panel.right-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.panel-label {
+  font-family: var(--BG);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  color: var(--accent);
+  text-align: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+  text-shadow: 0 0 16px rgba(54,182,231,0.3);
+}
+
+/* NCD CARDS */
+.ncd-card {
+  position: relative;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: var(--panel);
+  overflow: hidden;
+  user-select: none;
+}
+
+.ncd-card::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--c);
+  opacity: 0;
+  transition: opacity 0.22s;
+  border-radius: 6px 0 0 6px;
+}
+
+.ncd-card:hover { transform: translateX(5px); }
+.ncd-card.selected { transform: translateX(8px); }
+
+.ncd-card[data-color="pink"]     { --c: var(--pink); }
+.ncd-card[data-color="yellow"]   { --c: var(--yellow); }
+.ncd-card[data-color="green"]    { --c: var(--green); }
+.ncd-card[data-color="brown"]    { --c: var(--brown); }
+.ncd-card[data-color="lavender"] { --c: var(--lavender); }
+.ncd-card[data-color="black"]    { --c: var(--silver); }
+.ncd-card[data-color="grey"]     { --c: var(--grey); }
+
+.ncd-card:hover,
+.ncd-card.selected {
+  border-color: var(--c);
+  background: var(--panel2);
+}
+
+.ncd-card:hover::after,
+.ncd-card.selected::after { opacity: 1; }
+
+.ncd-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.ncd-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 8px var(--c);
+  flex-shrink: 0;
+}
+
+.ncd-name {
+  font-family: var(--BG);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--c);
+  text-transform: uppercase;
+}
+
+.ncd-subtitle {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  font-family: var(--MONO);
+  margin-bottom: 8px;
+  padding-left: 18px;
+  line-height: 1.5;
+}
+
+.ncd-stats {
+  display: flex;
+  gap: 14px;
+  padding-left: 18px;
+}
+
+.ncd-stat-val {
+  font-family: var(--BG);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--c);
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+}
+
+.ncd-stat-lbl {
+  font-family: var(--MONO);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+
+/* MARKET INSTRUMENTS */
+.market-group-label {
+  font-family: var(--MONO);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 10px 4px 4px;
+  border-bottom: 1px solid var(--dim);
+  margin-bottom: 2px;
+}
+
+.market-item {
+  padding: 7px 10px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.market-item:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent-border);
+}
+
+.market-item.selected {
+  background: rgba(54,182,231,0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 14px rgba(54,182,231,0.15);
+}
+
+.market-item-name {
+  font-family: var(--BG);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.market-item.selected .market-item-name { color: var(--accent); }
+
+.market-item-meta {
+  font-family: var(--MONO);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+/* CENTER ZONE */
+.center-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 28px;
+  position: relative;
+}
+
+.corner-tl, .corner-br {
+  position: absolute;
+  width: 20px; height: 20px;
+  border-color: var(--accent);
+  border-style: solid;
+  opacity: 0.3;
+}
+.corner-tl { top: 10px; left: 10px; border-width: 1px 0 0 1px; }
+.corner-br { bottom: 10px; right: 10px; border-width: 0 1px 1px 0; }
+
+.vs-idle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  transition: opacity 0.4s;
+}
+
+.vs-idle.hidden { display: none; }
+
+.vs-text {
+  font-family: var(--BG);
+  font-size: 110px;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  line-height: 1;
+  animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { color: var(--dim); }
+  50% { color: #0f2a3e; text-shadow: 0 0 60px rgba(54,182,231,0.06); }
+}
+
+.vs-hint {
+  font-family: var(--MONO);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  text-align: center;
+  letter-spacing: 0.08em;
+  line-height: 2.2;
+}
+
+.vs-hint strong { color: var(--accent); font-weight: 600; }
+
+/* BATTLE ZONE */
+.battle-zone {
+  width: 100%;
+  max-width: 700px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  display: none;
+}
+
+.battle-zone.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  display: block;
+}
+
+.battle-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 12px;
+}
+
+.battle-card-name {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 5px;
+}
+
+.battle-card-name.left {
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+
+.battle-card-name.right {
+  border: 1px solid var(--accent-border);
+  background: var(--accent-dim);
+  text-align: right;
+}
+
+.bcn-label {
+  font-family: var(--MONO);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+.bcn-name {
+  font-family: var(--BG);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.vs-badge {
+  font-family: var(--BG);
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  flex-shrink: 0;
+  border: 1px solid var(--accent-border);
+  border-radius: 50%;
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 16px rgba(54,182,231,0.2);
+  background: var(--accent-dim);
+}
+
+.stat-compare-row {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.stat-compare-row:last-of-type { border-bottom: none; }
+
+.stat-block { display: flex; flex-direction: column; gap: 6px; }
+.stat-block.right-block { align-items: flex-end; }
+
+.stat-metric {
+  font-family: var(--MONO);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.stat-value {
+  font-family: var(--BG);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+}
+
+.stat-sub {
+  font-family: var(--BODY);
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.stat-bar-wrap {
+  width: 100%;
+  height: 3px;
+  background: var(--dim);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.stat-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 0%;
+}
+
+.stat-center-lbl {
+  font-family: var(--BG);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-align: center;
+  line-height: 1.8;
+  opacity: 0.9;
+}
+
+.winner-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-family: var(--MONO);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+.winner-right { background: rgba(54,182,231,0.12); color: var(--accent); border: 1px solid var(--accent-border); }
+.winner-tie   { background: rgba(245,200,66,0.1);  color: #f5c842;       border: 1px solid rgba(245,200,66,0.25); }
+
+.summary-bar {
+  margin-top: 18px;
+  padding: 14px 18px;
+  background: var(--panel2);
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  box-shadow: 0 0 24px rgba(54,182,231,0.05);
+}
+
+.summary-lbl {
+  font-family: var(--MONO);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.summary-val {
+  font-family: var(--BG);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  margin-top: 3px;
+}
+
+.reset-btn {
+  padding: 8px 18px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--MONO);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.reset-btn:hover {
+  border-color: rgba(248,113,113,0.5);
+  color: #f87171;
+  background: rgba(248,113,113,0.06);
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">SEVEN <span>FINCORP</span></div>
+  <div class="tagline">NCD · BATTLE COMPARISON · FIXED INCOME ARENA</div>
+  <div style="opacity:0" class="tagline">pad</div>
+</div>
+
+<div class="instruction-bar">
+  SELECT A <span>SEVEN FINCORP NCD</span> ON THE LEFT &nbsp;·&nbsp; PICK A <span>MARKET INSTRUMENT</span> ON THE RIGHT &nbsp;·&nbsp; <span>COMPARE INSTANTLY</span>
+</div>
+
+<div class="arena">
+
+  <!-- LEFT: NCD Cards -->
+  <div class="side-panel">
+    <div class="panel-label">YOUR NCDs</div>
+
+    <div class="ncd-card" data-color="pink" data-id="pink" onclick="selectNCD(this)">
+      <div class="ncd-header"><div class="ncd-dot"></div><div class="ncd-name">Pink NCD</div></div>
+      <div class="ncd-subtitle">Retail Short-Term · 80C Eligible</div>
+      <div class="ncd-stats">
+        <div><div class="ncd-stat-val">10.5%</div><div class="ncd-stat-lbl">ROI p.a.</div></div>
+        <div><div class="ncd-stat-val">12M</div><div class="ncd-stat-lbl">Tenor</div></div>
+        <div><div class="ncd-stat-val">High</div><div class="ncd-stat-lbl">Flex</div></div>
+      </div>
+    </div>
+
+    <div class="ncd-card" data-color="yellow" data-id="yellow" onclick="selectNCD(this)">
+      <div class="ncd-header"><div class="ncd-dot"></div><div class="ncd-name">Yellow NCD</div></div>
+      <div class="ncd-subtitle">Growth Series · Semi-Annual Payout</div>
+      <div class="ncd-stats">
+        <div><div class="ncd-stat-val">11.5%</div><div class="ncd-stat-lbl">ROI p.a.</div></div>
+        <div><div class="ncd-stat-val">24M</div><div class="ncd-stat-lbl">Tenor</div></div>
+        <div><div class="ncd-stat-val">Med</div><div class="ncd-stat-lbl">Flex</div></div>
+      </div>
+    </div>
+
+    <div class="ncd-card" data-color="green" data-id="green" onclick="selectNCD(this)">
+      <div class="ncd-header"><div class="ncd-dot"></div><div class="ncd-name">Green NCD</div></div>
+      <div class="ncd-subtitle">ESG-Linked · Climate Finance</div>
+      <div class="ncd-stats">
+        <div><div class="ncd-stat-val">11%</div><div class="ncd-stat-lbl">ROI p.a.</div></div>
+        <div><div class="ncd-stat-val">36M</div><div class="ncd-stat-lbl">Tenor</div></div>
+        <div><div class="ncd-stat-val">Med</div><div class="ncd-stat-lbl">Flex</div></div>
+      </div>
+    </div>
+
+    <div class="ncd-card" data-color="brown" data-id="brown" onclick="selectNCD(this)">
+      <div class="ncd-header"><div class="ncd-dot"></div><div class="ncd-name">Brown NCD</div></div>
+      <div class="ncd-subtitle">Secured · Asset-Backed · Conservative</div>
+      <div class="ncd-stats">
+        <div><div class="ncd-stat-val">10%</div><div class="ncd-stat-lbl">ROI p.a.</div></div>
+        <div><div class="ncd-stat-val">18M</div><div class="ncd-stat-lbl">Tenor</div></div>
+        <div><div class="ncd-stat-val">High</div><div class="ncd-stat-lbl">Flex</div></div>
+      </div>
+    </div>
+
+    <div class="ncd-card" data-color="lavender" data-id="lavender" onclick="selectNCD(this)">
+      <div class="ncd-header"><div class="ncd-dot"></div><div class="ncd-name">Lavender NCD</div></div>
+      <div class="ncd-subtitle">Structured Premium · HNI Series</div>
+      <div class="ncd-stats">
+        <div><div class="ncd-stat-val">12.5%</div><div class="ncd-stat-lbl">ROI p.a.</div></div>
+        <div><div class="ncd-stat-val">24M</div><div class="ncd-stat-lbl">Tenor</div></div>
+        <div><div class="ncd-stat-val">Low</div><div class="ncd-stat-lbl">Flex</div></div>
+      </div>
+    </div>
+
+    <div class="ncd-card" data-color="black" data-id="black" onclick="selectNCD(this)">
+      <div class="ncd-header"><div class="ncd-dot"></div><div class="ncd-name">Black NCD</div></div>
+      <div class="ncd-subtitle">Elite High-Yield · Institutional Grade</div>
+      <div class="ncd-stats">
+        <div><div class="ncd-stat-val">13.5%</div><div class="ncd-stat-lbl">ROI p.a.</div></div>
+        <div><div class="ncd-stat-val">36M</div><div class="ncd-stat-lbl">Tenor</div></div>
+        <div><div class="ncd-stat-val">Low</div><div class="ncd-stat-lbl">Flex</div></div>
+      </div>
+    </div>
+
+    <div class="ncd-card" data-color="grey" data-id="grey" onclick="selectNCD(this)">
+      <div class="ncd-header"><div class="ncd-dot"></div><div class="ncd-name">Grey NCD</div></div>
+      <div class="ncd-subtitle">Floating Rate · Flexible Tenor</div>
+      <div class="ncd-stats">
+        <div><div class="ncd-stat-val">11–13%</div><div class="ncd-stat-lbl">ROI p.a.</div></div>
+        <div><div class="ncd-stat-val">12–36M</div><div class="ncd-stat-lbl">Tenor</div></div>
+        <div><div class="ncd-stat-val">V.High</div><div class="ncd-stat-lbl">Flex</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER -->
+  <div class="center-zone">
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+
+    <div class="vs-idle" id="vsIdle">
+      <div class="vs-text">VS</div>
+      <div class="vs-hint">
+        ← PICK AN NCD ON THE LEFT<br>
+        PICK A MARKET INSTRUMENT ON THE RIGHT →<br>
+        <strong>INSTANT COMPARISON LOADS</strong>
+      </div>
+    </div>
+
+    <div class="battle-zone" id="battleZone">
+      <div class="battle-title-row">
+        <div class="battle-card-name left">
+          <div class="bcn-label">Seven Fincorp</div>
+          <div class="bcn-name" id="leftTitle">—</div>
+        </div>
+        <div class="vs-badge">VS</div>
+        <div class="battle-card-name right">
+          <div class="bcn-label" style="text-align:right">Market Instrument</div>
+          <div class="bcn-name" id="rightTitle" style="color:var(--accent)">—</div>
+        </div>
+      </div>
+
+      <!-- TENURE -->
+      <div class="stat-compare-row">
+        <div class="stat-block">
+          <div class="stat-metric">Tenure</div>
+          <div class="stat-value" id="leftTenure">—</div>
+          <div class="stat-sub" id="leftTenureSub"></div>
+          <div class="stat-bar-wrap"><div class="stat-bar" id="leftTenureBar"></div></div>
+          <div id="leftTenureWin"></div>
+        </div>
+        <div class="stat-center-lbl">⏱<br>TENOR</div>
+        <div class="stat-block right-block">
+          <div class="stat-metric">Tenure</div>
+          <div class="stat-value" id="rightTenure" style="color:var(--accent)">—</div>
+          <div class="stat-sub" id="rightTenureSub"></div>
+          <div class="stat-bar-wrap"><div class="stat-bar" id="rightTenureBar" style="float:right"></div></div>
+          <div id="rightTenureWin"></div>
+        </div>
+      </div>
+
+      <!-- ROI -->
+      <div class="stat-compare-row">
+        <div class="stat-block">
+          <div class="stat-metric">Returns</div>
+          <div class="stat-value" id="leftROI">—</div>
+          <div class="stat-sub" id="leftROISub"></div>
+          <div class="stat-bar-wrap"><div class="stat-bar" id="leftROIBar"></div></div>
+          <div id="leftROIWin"></div>
+        </div>
+        <div class="stat-center-lbl">📈<br>ROI</div>
+        <div class="stat-block right-block">
+          <div class="stat-metric">Returns</div>
+          <div class="stat-value" id="rightROI" style="color:var(--accent)">—</div>
+          <div class="stat-sub" id="rightROISub"></div>
+          <div class="stat-bar-wrap"><div class="stat-bar" id="rightROIBar" style="float:right"></div></div>
+          <div id="rightROIWin"></div>
+        </div>
+      </div>
+
+      <!-- FLEXIBILITY -->
+      <div class="stat-compare-row">
+        <div class="stat-block">
+          <div class="stat-metric">Flexibility</div>
+          <div class="stat-value" id="leftFlex">—</div>
+          <div class="stat-sub" id="leftFlexSub"></div>
+          <div class="stat-bar-wrap"><div class="stat-bar" id="leftFlexBar"></div></div>
+          <div id="leftFlexWin"></div>
+        </div>
+        <div class="stat-center-lbl">🔓<br>FLEX</div>
+        <div class="stat-block right-block">
+          <div class="stat-metric">Flexibility</div>
+          <div class="stat-value" id="rightFlex" style="color:var(--accent)">—</div>
+          <div class="stat-sub" id="rightFlexSub"></div>
+          <div class="stat-bar-wrap"><div class="stat-bar" id="rightFlexBar" style="float:right"></div></div>
+          <div id="rightFlexWin"></div>
+        </div>
+      </div>
+
+      <div class="summary-bar">
+        <div>
+          <div class="summary-lbl">Regulator</div>
+          <div class="summary-val" id="sumRegulator">—</div>
+        </div>
+        <div>
+          <div class="summary-lbl">Min. Invest</div>
+          <div class="summary-val" id="sumMinInvest">—</div>
+        </div>
+        <div>
+          <div class="summary-lbl">Tradeable</div>
+          <div class="summary-val" id="sumTradeable">—</div>
+        </div>
+        <div>
+          <div class="summary-lbl">Tax</div>
+          <div class="summary-val" id="sumTax">—</div>
+        </div>
+        <button class="reset-btn" onclick="resetAll()">✕ RESET</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Market Instruments -->
+  <div class="side-panel right-panel">
+    <div class="panel-label">MARKET</div>
+
+    <div class="market-group-label">🏛️ Government Securities</div>
+    <div class="market-item" data-id="gsec" onclick="selectMarket(this)"><div class="market-item-name">G-Secs (Dated)</div><div class="market-item-meta">5–40 yrs · 7–8% · Sovereign</div></div>
+    <div class="market-item" data-id="tbill" onclick="selectMarket(this)"><div class="market-item-name">Treasury Bills</div><div class="market-item-meta">91–364 days · 6.5–7% · Sovereign</div></div>
+    <div class="market-item" data-id="sgb" onclick="selectMarket(this)"><div class="market-item-name">Sovereign Gold Bonds</div><div class="market-item-meta">8 yrs · 2.5%+gold · EEE</div></div>
+    <div class="market-item" data-id="sdl" onclick="selectMarket(this)"><div class="market-item-name">State Dev. Loans (SDLs)</div><div class="market-item-meta">5–30 yrs · 7.5–8.25% · RBI</div></div>
+    <div class="market-item" data-id="frsb" onclick="selectMarket(this)"><div class="market-item-name">RBI Floating Rate Bond</div><div class="market-item-meta">7 yrs · 7.35% · Sovereign</div></div>
+
+    <div class="market-group-label">🏦 PSU / Govt Entities</div>
+    <div class="market-item" data-id="psubond" onclick="selectMarket(this)"><div class="market-item-name">PSU Bonds</div><div class="market-item-meta">3–30 yrs · 7.5–8.5% · SEBI/RBI</div></div>
+    <div class="market-item" data-id="taxfree" onclick="selectMarket(this)"><div class="market-item-name">Tax-Free Bonds</div><div class="market-item-meta">10–20 yrs · 5.5–7% tax-free · SEBI</div></div>
+    <div class="market-item" data-id="bond54ec" onclick="selectMarket(this)"><div class="market-item-name">54EC Capital Gains Bonds</div><div class="market-item-meta">5 yrs lock-in · 5.25% · LTCG exempt</div></div>
+
+    <div class="market-group-label">🏢 Corporate</div>
+    <div class="market-item" data-id="ncd_sec" onclick="selectMarket(this)"><div class="market-item-name">Listed Secured NCDs</div><div class="market-item-meta">1–10 yrs · 8–11% · SEBI</div></div>
+    <div class="market-item" data-id="ncd_unsec" onclick="selectMarket(this)"><div class="market-item-name">Unsecured NCDs (Subordinated)</div><div class="market-item-meta">1–10 yrs · 10–13% · SEBI</div></div>
+    <div class="market-item" data-id="cp" onclick="selectMarket(this)"><div class="market-item-name">Commercial Paper</div><div class="market-item-meta">7 days–1 yr · 7–9% · RBI</div></div>
+    <div class="market-item" data-id="mld" onclick="selectMarket(this)"><div class="market-item-name">Market Linked Debentures</div><div class="market-item-meta">1–5 yrs · Variable · SEBI</div></div>
+
+    <div class="market-group-label">🏦 Banking</div>
+    <div class="market-item" data-id="bankfd" onclick="selectMarket(this)"><div class="market-item-name">Bank Fixed Deposit</div><div class="market-item-meta">7 days–10 yrs · 6.5–8% · RBI</div></div>
+    <div class="market-item" data-id="cd" onclick="selectMarket(this)"><div class="market-item-name">Certificate of Deposit</div><div class="market-item-meta">7 days–1 yr · 7–8.5% · RBI</div></div>
+    <div class="market-item" data-id="at1" onclick="selectMarket(this)"><div class="market-item-name">AT1 Bonds (Basel III)</div><div class="market-item-meta">Perpetual · 9–11% · RBI</div></div>
+
+    <div class="market-group-label">🏗️ NBFC / HFC</div>
+    <div class="market-item" data-id="nbfc_ncd" onclick="selectMarket(this)"><div class="market-item-name">NBFC NCDs (Listed)</div><div class="market-item-meta">1–7 yrs · 8–12% · SEBI/RBI</div></div>
+    <div class="market-item" data-id="nbfc_fd" onclick="selectMarket(this)"><div class="market-item-name">NBFC Public Deposits</div><div class="market-item-meta">12–60 months · 8–9% · RBI</div></div>
+
+    <div class="market-group-label">🏘️ Small Savings</div>
+    <div class="market-item" data-id="ppf" onclick="selectMarket(this)"><div class="market-item-name">PPF</div><div class="market-item-meta">15 yrs · 7.1% · EEE</div></div>
+    <div class="market-item" data-id="scss" onclick="selectMarket(this)"><div class="market-item-name">Senior Citizens Savings Scheme</div><div class="market-item-meta">5 yrs · 8.2% · 80C deduction</div></div>
+    <div class="market-item" data-id="nsc" onclick="selectMarket(this)"><div class="market-item-name">NSC</div><div class="market-item-meta">5 yrs · 7.7% compounded · 80C</div></div>
+    <div class="market-item" data-id="pomis" onclick="selectMarket(this)"><div class="market-item-name">Post Office MIS</div><div class="market-item-meta">5 yrs · 7.4% monthly · Sovereign</div></div>
+
+    <div class="market-group-label">🌿 Thematic</div>
+    <div class="market-item" data-id="greenbond" onclick="selectMarket(this)"><div class="market-item-name">Green Bonds</div><div class="market-item-meta">3–30 yrs · 8–10% · SEBI</div></div>
+    <div class="market-item" data-id="munibond" onclick="selectMarket(this)"><div class="market-item-name">Municipal Bonds</div><div class="market-item-meta">5–15 yrs · 8–9% · SEBI</div></div>
+  </div>
+</div>
+
+<script>
+const NCD_DATA = {
+  pink:    { name:'PINK NCD',     roi:'10.5%', roiNum:10.5, tenure:'12 Months', tenureNum:12, tenureLabel:'Short-term, ideal for parking',    flex:'HIGH',      flexNum:9,  flexLabel:'Early exit available',           regulator:'SEBI + RBI', minInvest:'₹10,000', tradeable:'Yes (Listed)', tax:'Fully Taxable', color:'#f472b6' },
+  yellow:  { name:'YELLOW NCD',   roi:'11.5%', roiNum:11.5, tenure:'24 Months', tenureNum:24, tenureLabel:'Medium-term with payouts',          flex:'MEDIUM',    flexNum:6,  flexLabel:'Semi-annual coupon payout',      regulator:'SEBI + RBI', minInvest:'₹10,000', tradeable:'Yes (Listed)', tax:'Fully Taxable', color:'#f5c842' },
+  green:   { name:'GREEN NCD',    roi:'11%',   roiNum:11.0, tenure:'36 Months', tenureNum:36, tenureLabel:'Long-term ESG commitment',          flex:'MEDIUM',    flexNum:5,  flexLabel:'ESG-linked exit conditions',     regulator:'SEBI + RBI', minInvest:'₹10,000', tradeable:'Yes (Listed)', tax:'Fully Taxable', color:'#34d399' },
+  brown:   { name:'BROWN NCD',    roi:'10%',   roiNum:10.0, tenure:'18 Months', tenureNum:18, tenureLabel:'Secured asset-backed',              flex:'HIGH',      flexNum:8,  flexLabel:'Asset-backed, early exit OK',    regulator:'SEBI + RBI', minInvest:'₹10,000', tradeable:'Yes (Listed)', tax:'Fully Taxable', color:'#d4895a' },
+  lavender:{ name:'LAVENDER NCD', roi:'12.5%', roiNum:12.5, tenure:'24 Months', tenureNum:24, tenureLabel:'Premium HNI structured product',   flex:'LOW',       flexNum:3,  flexLabel:'Lock-in for full yield',         regulator:'SEBI + RBI', minInvest:'₹1 Lakh',  tradeable:'Limited',      tax:'Fully Taxable', color:'#a78bfa' },
+  black:   { name:'BLACK NCD',    roi:'13.5%', roiNum:13.5, tenure:'36 Months', tenureNum:36, tenureLabel:'Elite high-yield institutional',   flex:'LOW',       flexNum:2,  flexLabel:'Strict lock-in, no early exit',  regulator:'SEBI + RBI', minInvest:'₹5 Lakh',  tradeable:'Limited',      tax:'Fully Taxable', color:'#94a3b8' },
+  grey:    { name:'GREY NCD',     roi:'11–13%',roiNum:12.0, tenure:'12–36M',    tenureNum:24, tenureLabel:'Flexible floating-rate tenor',     flex:'VERY HIGH',  flexNum:10, flexLabel:'Fully flexible exit window',     regulator:'SEBI + RBI', minInvest:'₹10,000', tradeable:'Yes (Listed)', tax:'Fully Taxable', color:'#7a8fa3' }
+};
+
+const MARKET_DATA = {
+  gsec:     { name:'G-SECS DATED',        roi:'7.5%',    roiNum:7.5,  tenure:'5–40 YRS',    tenureNum:60,  tenureLabel:'Long-duration sovereign',        flex:'HIGH',    flexNum:8, flexLabel:'Active secondary market (NDS-OM)',  regulator:'RBI',      minInvest:'₹10,000', tradeable:'Yes',     tax:'Fully Taxable' },
+  tbill:    { name:'TREASURY BILLS',       roi:'6.8%',    roiNum:6.8,  tenure:'91–364 DAYS', tenureNum:6,   tenureLabel:'Ultra-short sovereign',           flex:'HIGH',    flexNum:8, flexLabel:'Liquid secondary market',           regulator:'RBI',      minInvest:'₹25,000', tradeable:'Yes',     tax:'Fully Taxable' },
+  sgb:      { name:'SOV. GOLD BONDS',      roi:'2.5%+AU', roiNum:6.0,  tenure:'8 YEARS',     tenureNum:96,  tenureLabel:'Exit possible at yr 5',           flex:'LOW',     flexNum:3, flexLabel:'Only at coupon dates or exchange',  regulator:'RBI',      minInvest:'1g gold', tradeable:'Limited', tax:'CG Exempt' },
+  sdl:      { name:'STATE DEV. LOANS',     roi:'7.8%',    roiNum:7.8,  tenure:'5–30 YRS',    tenureNum:60,  tenureLabel:'State-level sovereign bond',      flex:'HIGH',    flexNum:7, flexLabel:'RBI secondary market',              regulator:'RBI',      minInvest:'₹10,000', tradeable:'Yes',     tax:'Fully Taxable' },
+  frsb:     { name:'RBI FLOAT BOND',       roi:'7.35%',   roiNum:7.35, tenure:'7 YEARS',     tenureNum:84,  tenureLabel:'Fixed 7-yr lock-in',              flex:'NONE',    flexNum:2, flexLabel:'Non-tradeable, no early exit',      regulator:'RBI',      minInvest:'₹1,000',  tradeable:'No',      tax:'Fully Taxable' },
+  psubond:  { name:'PSU BONDS',            roi:'8%',      roiNum:8.0,  tenure:'3–30 YRS',    tenureNum:36,  tenureLabel:'Govt-backed corporate bond',      flex:'HIGH',    flexNum:7, flexLabel:'BSE/NSE listed, liquid',            regulator:'SEBI/RBI', minInvest:'₹1,000',  tradeable:'Yes',     tax:'Fully Taxable' },
+  taxfree:  { name:'TAX-FREE BONDS',       roi:'6.5%*',   roiNum:9.0,  tenure:'10–20 YRS',   tenureNum:120, tenureLabel:'Long-term, tax advantage',        flex:'MEDIUM',  flexNum:5, flexLabel:'Secondary market (thin)',            regulator:'SEBI',     minInvest:'₹1,000',  tradeable:'Yes',     tax:'Interest Tax-Free' },
+  bond54ec: { name:'54EC BONDS',           roi:'5.25%',   roiNum:5.25, tenure:'5 YRS',       tenureNum:60,  tenureLabel:'Mandatory 5-yr lock-in',          flex:'NONE',    flexNum:1, flexLabel:'No exit; non-tradeable',            regulator:'SEBI',     minInvest:'₹10,000', tradeable:'No',      tax:'LTCG Exempt (54EC)' },
+  ncd_sec:  { name:'SECURED NCDs',         roi:'9.5%',    roiNum:9.5,  tenure:'1–10 YRS',    tenureNum:24,  tenureLabel:'Asset-backed corporate bond',     flex:'HIGH',    flexNum:7, flexLabel:'Exchange listed',                   regulator:'SEBI',     minInvest:'₹10,000', tradeable:'Yes',     tax:'Fully Taxable' },
+  ncd_unsec:{ name:'UNSECURED NCDs',       roi:'11%',     roiNum:11.0, tenure:'1–10 YRS',    tenureNum:24,  tenureLabel:'Higher yield, subordinated',      flex:'HIGH',    flexNum:6, flexLabel:'Exchange listed',                   regulator:'SEBI',     minInvest:'₹10,000', tradeable:'Yes',     tax:'Fully Taxable' },
+  cp:       { name:'COMMERCIAL PAPER',     roi:'7.5%',    roiNum:7.5,  tenure:'7D–1 YR',     tenureNum:6,   tenureLabel:'Ultra-short corporate paper',     flex:'HIGH',    flexNum:8, flexLabel:'Liquid secondary market',           regulator:'RBI',      minInvest:'₹5 Lakh', tradeable:'Yes',     tax:'Fully Taxable' },
+  mld:      { name:'MARKET LINKED DEB.',   roi:'Variable',roiNum:10.0, tenure:'1–5 YRS',     tenureNum:24,  tenureLabel:'Index/benchmark linked',          flex:'LOW',     flexNum:3, flexLabel:'Limited secondary market',          regulator:'SEBI',     minInvest:'₹1 Lakh', tradeable:'Limited', tax:'STCG/LTCG' },
+  bankfd:   { name:'BANK FIXED DEPOSIT',   roi:'7.5%',    roiNum:7.5,  tenure:'7D–10 YRS',   tenureNum:12,  tenureLabel:'Most common retail product',      flex:'MEDIUM',  flexNum:5, flexLabel:'Pre-closure with penalty',          regulator:'RBI',      minInvest:'₹1,000',  tradeable:'No',      tax:'TDS @ 10%' },
+  cd:       { name:'CERT. OF DEPOSIT',     roi:'7.8%',    roiNum:7.8,  tenure:'7D–1 YR',     tenureNum:6,   tenureLabel:'Wholesale bank instrument',       flex:'HIGH',    flexNum:7, flexLabel:'Tradeable in secondary market',     regulator:'RBI',      minInvest:'₹1 Lakh', tradeable:'Yes',     tax:'Fully Taxable' },
+  at1:      { name:'AT1 BONDS',            roi:'10%',     roiNum:10.0, tenure:'PERPETUAL',    tenureNum:120, tenureLabel:'Perpetual with call option',      flex:'LOW',     flexNum:2, flexLabel:'Limited; call option dependent',    regulator:'RBI',      minInvest:'₹10 Lakh',tradeable:'Limited', tax:'Fully Taxable' },
+  nbfc_ncd: { name:'NBFC NCDs',            roi:'10.5%',   roiNum:10.5, tenure:'1–7 YRS',     tenureNum:24,  tenureLabel:'NBFC listed on exchange',         flex:'HIGH',    flexNum:7, flexLabel:'Exchange listed, tradeable',        regulator:'SEBI/RBI', minInvest:'₹10,000', tradeable:'Yes',     tax:'Fully Taxable' },
+  nbfc_fd:  { name:'NBFC DEPOSITS',        roi:'8.5%',    roiNum:8.5,  tenure:'12–60 MO.',   tenureNum:24,  tenureLabel:'NBFC term deposit',               flex:'MEDIUM',  flexNum:4, flexLabel:'Pre-closure with penalty',          regulator:'RBI',      minInvest:'₹10,000', tradeable:'No',      tax:'TDS applicable' },
+  ppf:      { name:'PPF',                  roi:'7.1%',    roiNum:7.1,  tenure:'15 YEARS',    tenureNum:180, tenureLabel:'Long-term sovereign savings',     flex:'LOW',     flexNum:3, flexLabel:'Partial withdrawal after yr 7',     regulator:'MoF',      minInvest:'₹500/yr', tradeable:'No',      tax:'EEE — Fully Exempt' },
+  scss:     { name:'SCSS',                 roi:'8.2%',    roiNum:8.2,  tenure:'5 YEARS',     tenureNum:60,  tenureLabel:'Best rate in small savings',      flex:'MEDIUM',  flexNum:4, flexLabel:'Premature closure with penalty',    regulator:'MoF',      minInvest:'₹1,000',  tradeable:'No',      tax:'80C deductible' },
+  nsc:      { name:'NSC',                  roi:'7.7%',    roiNum:7.7,  tenure:'5 YEARS',     tenureNum:60,  tenureLabel:'Compounded sovereign savings',    flex:'LOW',     flexNum:2, flexLabel:'No premature withdrawal',           regulator:'MoF',      minInvest:'₹1,000',  tradeable:'No',      tax:'80C on invest' },
+  pomis:    { name:'POST OFFICE MIS',      roi:'7.4%',    roiNum:7.4,  tenure:'5 YEARS',     tenureNum:60,  tenureLabel:'Monthly income for retirees',     flex:'LOW',     flexNum:3, flexLabel:'Premature with deduction',          regulator:'MoF',      minInvest:'₹1,500',  tradeable:'No',      tax:'Fully Taxable' },
+  greenbond:{ name:'GREEN BONDS',          roi:'9%',      roiNum:9.0,  tenure:'3–30 YRS',    tenureNum:36,  tenureLabel:'ESG-linked climate finance',      flex:'HIGH',    flexNum:6, flexLabel:'Exchange listed',                   regulator:'SEBI',     minInvest:'₹10,000', tradeable:'Yes',     tax:'Fully Taxable' },
+  munibond: { name:'MUNICIPAL BONDS',      roi:'8.5%',    roiNum:8.5,  tenure:'5–15 YRS',    tenureNum:60,  tenureLabel:'Urban local body bonds',          flex:'MEDIUM',  flexNum:4, flexLabel:'Limited secondary market',          regulator:'SEBI',     minInvest:'₹1,000',  tradeable:'Limited', tax:'Fully Taxable' },
+};
+
+let selectedNCD = null;
+let selectedMarket = null;
+
+function selectNCD(el) {
+  document.querySelectorAll('.ncd-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedNCD = el.dataset.id;
+  tryRender();
+}
+
+function selectMarket(el) {
+  document.querySelectorAll('.market-item').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedMarket = el.dataset.id;
+  tryRender();
+}
+
+function tryRender() {
+  if (selectedNCD && selectedMarket) renderBattle();
+}
+
+function renderBattle() {
+  const L = NCD_DATA[selectedNCD];
+  const R = MARKET_DATA[selectedMarket];
+
+  document.getElementById('vsIdle').classList.add('hidden');
+  const bz = document.getElementById('battleZone');
+  bz.style.display = 'block';
+  requestAnimationFrame(() => bz.classList.add('visible'));
+
+  document.getElementById('leftTitle').textContent = L.name;
+  document.getElementById('leftTitle').style.color = L.color;
+  document.getElementById('rightTitle').textContent = R.name;
+
+  // Reset bars
+  ['leftTenureBar','leftROIBar','leftFlexBar','rightTenureBar','rightROIBar','rightFlexBar']
+    .forEach(id => document.getElementById(id).style.width = '0%');
+
+  // Fill text
+  set('leftTenure',    L.tenure,      L.color);
+  set('leftTenureSub', L.tenureLabel);
+  set('rightTenure',   R.tenure,      '#36b6e7');
+  set('rightTenureSub',R.tenureLabel);
+
+  set('leftROI',    L.roi,                       L.color);
+  set('leftROISub', 'Seven Fincorp · ' + L.regulator);
+  set('rightROI',   R.roi,                       '#36b6e7');
+  set('rightROISub','Market · ' + R.regulator);
+
+  set('leftFlex',    L.flex,    L.color);
+  set('leftFlexSub', L.flexLabel);
+  set('rightFlex',   R.flex,   '#36b6e7');
+  set('rightFlexSub',R.flexLabel);
+
+  // Animate bars
+  setTimeout(() => {
+    const maxT = Math.max(L.tenureNum, R.tenureNum, 1);
+    bar('leftTenureBar',  (L.tenureNum/maxT*100), L.color,  false);
+    bar('rightTenureBar', (R.tenureNum/maxT*100), '#36b6e7', true);
+
+    const maxR = Math.max(L.roiNum, R.roiNum, 1);
+    bar('leftROIBar',  (L.roiNum/maxR*100), L.color,  false);
+    bar('rightROIBar', (R.roiNum/maxR*100), '#36b6e7', true);
+
+    bar('leftFlexBar',  L.flexNum*10, L.color,  false);
+    bar('rightFlexBar', R.flexNum*10, '#36b6e7', true);
+  }, 120);
+
+  // Winners
+  setWinner('leftTenureWin','rightTenureWin', L.tenureNum <= R.tenureNum, L.tenureNum === R.tenureNum, 'SHORTER', L.color);
+  setWinner('leftROIWin',   'rightROIWin',   L.roiNum   >= R.roiNum,    L.roiNum   === R.roiNum,    'HIGHER ROI', L.color);
+  setWinner('leftFlexWin',  'rightFlexWin',  L.flexNum  >= R.flexNum,   L.flexNum  === R.flexNum,   'MORE FLEXIBLE', L.color);
+
+  // Summary
+  document.getElementById('sumRegulator').textContent = R.regulator;
+  document.getElementById('sumMinInvest').textContent = R.minInvest;
+  document.getElementById('sumTradeable').textContent = R.tradeable;
+  document.getElementById('sumTax').textContent = R.tax;
+}
+
+function set(id, val, color) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = val;
+  if (color) el.style.color = color;
+}
+
+function bar(id, pct, color, floatRight) {
+  const el = document.getElementById(id);
+  el.style.width = Math.round(pct) + '%';
+  el.style.background = color;
+  if (floatRight) el.style.float = 'right';
+}
+
+function setWinner(leftId, rightId, leftWins, isTie, label, color) {
+  const lEl = document.getElementById(leftId);
+  const rEl = document.getElementById(rightId);
+  if (isTie) {
+    lEl.innerHTML = `<span class="winner-tag winner-tie">TIED</span>`;
+    rEl.innerHTML = `<span class="winner-tag winner-tie">TIED</span>`;
+  } else if (leftWins) {
+    lEl.innerHTML = `<span class="winner-tag" style="background:${color}1a;color:${color};border:1px solid ${color}40">✓ ${label}</span>`;
+    rEl.innerHTML = '';
+  } else {
+    rEl.innerHTML = `<span class="winner-tag winner-right">✓ ${label}</span>`;
+    lEl.innerHTML = '';
+  }
+}
+
+function resetAll() {
+  selectedNCD = null;
+  selectedMarket = null;
+  document.querySelectorAll('.ncd-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.market-item').forEach(c => c.classList.remove('selected'));
+  document.getElementById('vsIdle').classList.remove('hidden');
+  const bz = document.getElementById('battleZone');
+  bz.classList.remove('visible');
+  setTimeout(() => { bz.style.display = 'none'; }, 450);
+}
+</script>
+</body>
+</html>
